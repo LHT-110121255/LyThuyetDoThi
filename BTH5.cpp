@@ -6,7 +6,7 @@ using namespace std;
 #define TRUE 1
 #define FALSE 0
 
-int A[MAX][MAX], n, u; // arrA chua matran, n la so dinh, u la dinh bat dau
+int A[MAX][MAX], n, u, u2; // arrA chua matran, n la so dinh, u la dinh bat dau
 
 void Init() { // khoi tao ( doc file, nhap vao matran A)
 	FILE *f = fopen("Matranke.txt", "r");
@@ -27,9 +27,13 @@ int Kiemtra() {
 		for(int j = 1; j <= n; j++) 
 			s+= A[i][j]; // s là tong cac bac cua dinh i 
 		if(s%2) d++; // neu s%2 khac 0 tuc la bac le thi d++
+		u2 = i;
 	}
-	if (d > 0) 
+	if (d > 0)  {
+		if(d == 2)
+			return -1; // co 2 dinh le thi co duong di
 		return FALSE; // d > 0 tuc la co dinh bac le => ko co Euler
+	}
 	return TRUE; // nguoc lai, co Euler
 	
 }
@@ -60,17 +64,20 @@ void Euler() {
 	  }
 	} while(top!=0);
 
-	cout<<"Co chu trinh Euler:";
-	for(x=dCE; x>0; x--) // in mang ket qua
-		cout<<CE[x]<<"\t";
+	for(x=dCE; x>1; x--) // in mang ket qua
+		cout<<CE[x]<<" -> ";
+	cout << CE[1];
 }
 
 int main() {
 	Init();
-
- 	if(Kiemtra()) {// neu co Euler thi tim 
+	if(Kiemtra() == -1) { // co duong di
+		u = u2;
+		cout<<"Co duong di:";
+		Euler();
+	} else if(Kiemtra() == TRUE) {// neu co Euler thi tim 
  		cout << "Nhap dinh = "; cin >> u;
+ 		cout<<"Co chu trinh Euler:";
   		Euler();
-  }
- 	else cout << "\n Khong co chu trinh Euler";
+   } else cout << "\n Khong co chu trinh Euler";
 }
